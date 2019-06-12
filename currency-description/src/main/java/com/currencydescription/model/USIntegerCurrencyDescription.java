@@ -2,13 +2,12 @@ package com.currencydescription.model;
 
 import com.currencydescription.enums.Denominations;
 import com.currencydescription.exceptions.InvalidNumberToConvert;
-import com.currencydescription.utility.CurrencyDescriptionUtility;
 
 public class USIntegerCurrencyDescription extends CurrencyDescription {
 	
 	@Override
 	public String getCurrencyDescription(int amount) throws InvalidNumberToConvert {
-		CurrencyDescriptionUtility.validateCurrency(amount);
+		validateCurrency(amount);
 		StringBuilder sb = new StringBuilder("");
 		
 		int factor = amount/Denominations.MILLION.getNumberValue();
@@ -17,7 +16,7 @@ public class USIntegerCurrencyDescription extends CurrencyDescription {
 		//System.out.println("million factor "+factor+" remainder "+remainder);
 		
 		if (factor != 0) {
-			sb.append(CurrencyDescriptionUtility.evaluateMillionsDescription(factor));
+			sb.append(evaluateMillionsDescription(factor));
 			sb.append(" ");
 		}
 		
@@ -29,11 +28,11 @@ public class USIntegerCurrencyDescription extends CurrencyDescription {
 		remainder = remainder%Denominations.THOUSAND.getNumberValue();
 		//System.out.println("thousand factor "+factor+" remainder "+remainder);
 		if (factor != 0) {
-			sb.append(CurrencyDescriptionUtility.evaluateThousandsDescription(factor));
+			sb.append(evaluateThousandsDescription(factor));
 			sb.append(" ");
 		}
 		
-		sb.append(CurrencyDescriptionUtility.evaluateThreeDigitBlock(remainder));
+		sb.append(evaluateThreeDigitBlock(remainder));
 		
 		return sb.toString().replaceAll("^(and.)*", "").trim();
 	}
